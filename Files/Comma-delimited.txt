@@ -1,0 +1,5 @@
+LastName, FirstName, Email, FavoriteColor, DateOfBirth
+Anderson, Brannigan, alex@aaa.com, maroon, 2002-11-11
+Abdullah, Bridgette, bbbb@bbb.com, silver, 1999-01-01
+Brooklyn, Augustine, bbbb@bbb.net, yellow, 1999-12-31
+Cromwell, Charlotte, char@aaa.com, indigo, 1991-12-31

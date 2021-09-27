@@ -1,6 +1,6 @@
 namespace Homework.Services.DataService
 {
-	public interface DataService
+	public interface IDataService
 	{
 		GetDataResponse GetData(GetDataRequest request);
 	}

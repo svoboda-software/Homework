@@ -2,15 +2,15 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Build Homework.ConsoleApp",
+            "label": "build-homework--step-1",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Homework.ConsoleApp/Homework.ConsoleApp.csproj"
+                "${workspaceFolder}/Homework.Parser/Homework.Parser.csproj"
             ],
 		"options": {
-                "cwd": "${workspaceFolder}/Homework.ConsoleApp"
+                "cwd": "${workspaceFolder}/Homework.Parser"
             },
             "problemMatcher": "$msCompile"
         },

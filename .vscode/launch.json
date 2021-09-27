@@ -5,13 +5,13 @@
     "version": "0.2.0",
     "configurations": [
 		{
-			"name": "Run Homework.ConsoleApp",
+			"name": "run-homework--step-1",
 			"type": "coreclr",
 			"request": "launch",
-			"preLaunchTask": "Build Homework.ConsoleApp",
-			"program": "${workspaceFolder}/Homework.ConsoleApp/bin/Debug/netcoreapp3.1/Homework.ConsoleApp.dll",
+			"preLaunchTask": "build-homework--step-1",
+			"program": "${workspaceFolder}/Homework.Parser/bin/Debug/netcoreapp3.1/Homework.Parser.dll",
 			"args": [],
-			"cwd": "${workspaceFolder}/Homework.ConsoleApp",
+			"cwd": "${workspaceFolder}/Homework.Parser",
 			"stopAtEntry": false,
 			"console": "integratedTerminal",
 			"logging": {

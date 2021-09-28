@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="../Homework.Shared/Homework.Shared.csproj" />
+	<ProjectReference Include="../Homework.Services/Homework.Services.csproj" />
 	<ProjectReference Include="../Homework.Data/Homework.Data.csproj" />
   </ItemGroup>
 

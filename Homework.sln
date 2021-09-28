@@ -3,14 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homework.Parser", "Homework.Parser\Homework.Parser.csproj", "{261019C3-9A3D-417B-90F1-6EEEE6A7CEFD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homework.Shared", "Homework.Shared\Homework.Shared.csproj", "{19597410-E852-4D57-934E-0BE9398012C0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homework.Data", "Homework.Data\Homework.Data.csproj", "{0D4F06BB-37CA-4BBA-AF14-D082748CC56A}"
-EndProject
+
+
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Homework.Services", "Homework.Services\Homework.Services.csproj", "{555F998E-2F47-45F0-8A40-2D7F623F9FC7}"
 EndProject
+
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

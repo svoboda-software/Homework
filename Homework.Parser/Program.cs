@@ -6,7 +6,8 @@ namespace Homework.Parser
 		{
 			try
 			{
-				Parser.Parse();
+				var parser = new Parser();
+				parser.Parse();
 			}
 			catch (System.Exception ex)
 			{

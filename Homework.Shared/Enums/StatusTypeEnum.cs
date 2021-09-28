@@ -1,8 +1,9 @@
 namespace Homework.Shared.Enums
 {
-	public enum StatusTypeEnum
+	public enum TaskTypeEnum
 	{
 		Application,
+		GetData,
 		Sort
 	}
 }

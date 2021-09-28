@@ -1,11 +1,11 @@
 namespace Homework.Shared.Enums
 {
-	public enum FieldTypeEnum
+	public enum RecordFieldTypeEnum
 	{
 		LastName,
 		FirstName,
 		Email,
 		FavoriteColor,
-		DateOfBirth
+		DateOfBirth,
 	}
 }

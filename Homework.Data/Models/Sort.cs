@@ -4,20 +4,17 @@ namespace Homework.Data.Models
 {
 	public class Sort
 	{
-		// Example of overloading.
-		public Sort(FieldTypeEnum FieldType)
+		public Sort(RecordFieldTypeEnum recordFieldType)
 		{
-			this.FieldType = FieldType;
+			this.RecordFieldType = recordFieldType;
 			this.SortDirectionType = SortDirectionTypeEnum.Ascending;
 		}
-
-		public Sort(FieldTypeEnum FieldType, SortDirectionTypeEnum SortDirectionType)
+		public Sort(RecordFieldTypeEnum recordFieldType, SortDirectionTypeEnum SortDirectionType)
 		{
-			this.FieldType = FieldType;
+			this.RecordFieldType = recordFieldType;
 			this.SortDirectionType = SortDirectionType;
 		}
-
-		public FieldTypeEnum FieldType { get; set; }
+		public RecordFieldTypeEnum RecordFieldType { get; set; }
 		public SortDirectionTypeEnum SortDirectionType { get; set; }
 	}
 }

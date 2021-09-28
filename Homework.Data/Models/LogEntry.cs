@@ -3,16 +3,15 @@ using System.Collections.Generic;
 
 namespace Homework.Data.Models
 {
-	public class Status
+	public class LogEntry
 	{
-		public Status(StatusTypeEnum StatusType, EventTypeEnum EventType, List<Sort> Sorts)
+		public LogEntry(TaskTypeEnum TaskType, EventTypeEnum EventType, List<Sort> Sorts)
 		{
-			this.StatusType = StatusType;
+			this.TaskType = TaskType;
 			this.EventType = EventType;
 			this.Sorts = Sorts;
 		}
-
-		public StatusTypeEnum StatusType { get; set; }
+		public TaskTypeEnum TaskType { get; set; }
 		public EventTypeEnum EventType { get; set; }
 		public List<Sort> Sorts { get; set; }
 	}

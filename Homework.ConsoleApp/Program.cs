@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Hosting;
 using System;
 
 namespace Homework.App
@@ -7,6 +8,8 @@ namespace Homework.App
 		#region "Public methods"
 		public static void Main(string[] args)
 		{
+			var builder = Host.CreateDefaultBuilder().Build();
+
 			Console.Clear();
 			Console.WriteLine("- Query application started.");
 			Console.WriteLine();

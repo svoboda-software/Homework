@@ -1,12 +1,14 @@
+using Homework.Data.Repositories.RecordRepository;
 using Homework.Services.RecordService.Models;
 
 namespace Homework.Services.RecordService.Implementation
 {
 	public class RecordService : IRecordService
 	{
-		public RecordService()
+		private readonly IRecordRepository repo;
+		public RecordService(IRecordRepository repo)
 		{
-
+			this.repo = repo;
 		}
 
 		#region "Public methods"

@@ -1,4 +1,3 @@
-using Homework.Data.Repositories.RecordRepository;
 using Homework.Data.Repositories.RecordRepository.Models;
 
 namespace Homework.Data.Repositories.RecordRepository.Implementation

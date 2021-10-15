@@ -3,9 +3,12 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
+
   <ItemGroup>
     <ProjectReference Include="../Homework.Data/Homework.Data.csproj"/>
+	<ProjectReference Include="../Homework.Services/Homework.Services.csproj" />
   </ItemGroup>
+
   <ItemGroup>
     <None Include="$(SolutionDir)Files\**" CopyToOutputDirectory="PreserveNewest" LinkBase="Files\"/>
   </ItemGroup>

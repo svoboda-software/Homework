@@ -22,5 +22,19 @@ namespace Homework.Services.RecordService.Models
 				// Use PadLeft() to right-align the date column for better readability.
 				DateOfBirth?.Trim().PadLeft(11));
 		}
+
+		/// <summary>
+		/// Returns a space-v string of record property names.
+		/// <summary>
+		public string ColumnHeaders()
+		{
+			return string.Join(" ",
+				nameof(LastName),
+				nameof(FirstName),
+				// Pads the email column header for better readability.
+				nameof(Email).PadRight(12),
+				nameof(FavoriteColor),
+				nameof(DateOfBirth));
+		}
 	}
 }

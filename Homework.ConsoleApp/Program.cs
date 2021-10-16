@@ -60,6 +60,13 @@ namespace Homework.ConsoleApp
 
 		private static void ShowRecords(List<Record> records)
 		{
+			Console.WriteLine();
+			// Show the column headers.
+			Console.WriteLine($"      {records.First().ColumnHeaders()}");
+
+			// Show a separator line between the column headers and the data.
+			Console.WriteLine($"      {string.Join(" ", string.Concat(Enumerable.Repeat("-", 8)), string.Concat(Enumerable.Repeat("-", 9)), string.Concat(Enumerable.Repeat("-", 12)), string.Concat(Enumerable.Repeat("-", 13)), string.Concat(Enumerable.Repeat("-", 11)))}");
+
 			// Show the list of records to the user.
 			records?.ForEach(f => Console.WriteLine($"      {f.ToString()}"));
 			Console.WriteLine();

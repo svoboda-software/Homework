@@ -35,6 +35,17 @@ namespace Homework.Data.Repositories.RecordRepository.Implementation
 				Records = records
 			};
 		}
+
+		public QueryRecordsResponse QueryRecords(QueryRecordsRequest request)
+		{
+			var records = new List<Record>();
+
+			return new QueryRecordsResponse
+			{
+				Records = records,
+				Success = records != null
+			};
+		}
 		#endregion
 
 		#region "Private methods"

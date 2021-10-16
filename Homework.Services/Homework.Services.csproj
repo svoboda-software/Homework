@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
@@ -10,5 +9,6 @@
 
   <ItemGroup>
     <ProjectReference Include="../Homework.Data/Homework.Data.csproj" />
+	<ProjectReference Include="../Homework.Shared/Homework.Shared.csproj" />
   </ItemGroup>
 </Project>

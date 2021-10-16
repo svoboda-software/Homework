@@ -14,8 +14,10 @@ using Homework.Services.RecordService.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
-namespace Homework.App
+namespace Homework.ConsoleApp
 {
 	public class Program
 	{
@@ -46,12 +48,21 @@ namespace Homework.App
 		#endregion
 
 		#region "Private methods"
+
 		private static void QueryRecords(IServiceProvider serviceProvider)
 		{
 			Console.WriteLine("  - Querying records...");
 
 			var recordService = serviceProvider.GetService<IRecordService>();
 			var records = recordService.GetRecords(new GetRecordsRequest())?.Records;
+			ShowRecords(records);
+		}
+
+		private static void ShowRecords(List<Record> records)
+		{
+			// Show the list of records to the user.
+			records?.ForEach(f => Console.WriteLine($"      {f.ToString()}"));
+			Console.WriteLine();
 		}
 		#endregion
 	}

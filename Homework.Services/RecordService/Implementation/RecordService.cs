@@ -3,7 +3,7 @@ using FromRepo = Homework.Data.Repositories.RecordRepository.Models;
 using Homework.Services.FileService;
 using Homework.Services.FileService.Models;
 using Homework.Services.RecordService.Models;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 
 namespace Homework.Services.RecordService.Implementation
@@ -50,14 +50,37 @@ namespace Homework.Services.RecordService.Implementation
 
 		public QueryRecordsResponse QueryRecords(QueryRecordsRequest request)
 		{
-			var records = new List<Record>();
+			// Get the records.
+			var records = GetRecords(new GetRecordsRequest())?.Records;
 
-			// TODO: Call the repo to get the sorted records.
+			// Query the records.
+			var sorted = repo.QueryRecords(new FromRepo.QueryRecordsRequest
+			{
+				Sorts = request?.Sorts,
+				// Convert from the service model to the repo entity for the request.
+				Records = records?.Select(s => new FromRepo.Record
+				{
+					LastName = s.LastName,
+					FirstName = s.FirstName,
+					Email = s.Email,
+					FavoriteColor = s.FavoriteColor,
+					DateOfBirth = Convert.ToDateTime(s.DateOfBirth)
+				}).ToList()
+				// Convert from the repo entity to the service model for the response.
+			})?.Records?.Select(s => new Record
+			{
+				LastName = s.LastName,
+				FirstName = s.FirstName,
+				Email = s.Email,
+				FavoriteColor = s.FavoriteColor,
+				DateOfBirth = s.DateOfBirth.ToString()
+			}).ToList();
+
 
 			return new QueryRecordsResponse
 			{
-				Success = records != null,
-				Records = records
+				Success = sorted != null,
+				Records = sorted
 			};
 		}
 		#endregion

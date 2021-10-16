@@ -3,6 +3,7 @@ using FromRepo = Homework.Data.Repositories.RecordRepository.Models;
 using Homework.Services.FileService;
 using Homework.Services.FileService.Models;
 using Homework.Services.RecordService.Models;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Homework.Services.RecordService.Implementation
@@ -41,6 +42,19 @@ namespace Homework.Services.RecordService.Implementation
 			.ToList();
 
 			return new GetRecordsResponse
+			{
+				Success = records != null,
+				Records = records
+			};
+		}
+
+		public QueryRecordsResponse QueryRecords(QueryRecordsRequest request)
+		{
+			var records = new List<Record>();
+
+			// TODO: Call the repo to get the sorted records.
+
+			return new QueryRecordsResponse
 			{
 				Success = records != null,
 				Records = records

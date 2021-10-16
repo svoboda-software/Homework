@@ -1,15 +1,18 @@
 using Homework.Data.Repositories.FileRepository;
+using FromRepo = Homework.Data.Repositories.FileRepository.Models;
 using Homework.Services.DelimiterService;
 using Homework.Services.DelimiterService.Models;
 using Homework.Services.FileService.Models;
 using Homework.Shared.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Homework.Services.FileService.Implementation
 {
 	public class FileService : IFileService
 	{
 		private IFileRepository repo { get; }
+
 		private IDelimiterService delimiterService { get; set; }
 
 		public FileService(IFileRepository repo, IDelimiterService delimiterService)
@@ -20,10 +23,12 @@ namespace Homework.Services.FileService.Implementation
 
 		public GetFilesResponse GetFiles(GetFilesRequest request)
 		{
-			var files = new List<File>();
-
 			var delimeters = delimiterService.GetDelimiters(new GetDelimitersRequest())?.Delimiters;
-			// TODO: Call the file repo to get the path from each delimiter.
+			var files = delimeters?.Select(s => new File
+			{
+				Delimiter = s.Symbol,
+				Path = repo.GetPath(new FromRepo.GetPathRequest{ DelimiterName = s.Name })?.Path
+			})?.ToList();
 
 			return new GetFilesResponse
 			{

@@ -11,22 +11,27 @@ using Homework.Services.FileService.Implementation;
 using Homework.Services.RecordService.Implementation;
 using Homework.Services.RecordService;
 using Homework.Services.RecordService.Models;
+using Homework.Shared.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Homework.ConsoleApp
 {
 	public class Program
 	{
+		public static IServiceProvider serviceProvider { get; set; }
+
 		#region "Public methods"
+
 		public static void Main(string[] args)
 		{
 			var builder = Host.CreateDefaultBuilder().Build();
 
-			IServiceProvider serviceProvider = new ServiceCollection()
+			serviceProvider = new ServiceCollection()
 				.AddScoped<IDelimiterRepository, DelimiterRepository>()
 				.AddScoped<IFileRepository, FileRepository>()
 				.AddScoped<IRecordRepository, RecordRepository>()
@@ -40,7 +45,7 @@ namespace Homework.ConsoleApp
 			Console.WriteLine();
 
 			// Query the records.
-			QueryRecords(serviceProvider);
+			QueryRecords();
 
 			Console.WriteLine("- Query application ended.");
 			Console.WriteLine();
@@ -49,13 +54,41 @@ namespace Homework.ConsoleApp
 
 		#region "Private methods"
 
-		private static void QueryRecords(IServiceProvider serviceProvider)
+		private static void Query(List<Sort> sorts)
+		{
+			var recordService = serviceProvider.GetService<IRecordService>();
+			var sortedRecords = recordService.QueryRecords(new QueryRecordsRequest
+			{
+				Sorts = sorts.Select(s => new Sort
+				{
+					PropertyName = s.PropertyName,
+					SortDirection = s.SortDirection
+				}).ToList()
+			})?.Records;
+
+			ShowRecords(sortedRecords);
+		}
+
+		private static void QueryRecords()
 		{
 			Console.WriteLine("  - Querying records...");
 
-			var recordService = serviceProvider.GetService<IRecordService>();
-			var records = recordService.GetRecords(new GetRecordsRequest())?.Records;
-			ShowRecords(records);
+			// Output 1: FavoriteColor ascending, then LastName ascending.
+			Query(new List<Sort>
+			{
+				new Sort{ PropertyName = "FavoriteColor" },
+				new Sort{ PropertyName = "LastName" }
+			});
+
+			// Output 2: DateOfBirth ascending.
+			Query(new List<Sort> { new Sort { PropertyName = "DateOfBirth" } });
+
+			// Output 3: LastName descending
+			Query(new List<Sort>{ new Sort
+			{
+				PropertyName = "LastName",
+				SortDirection = ListSortDirection.Descending
+			}});
 		}
 
 		private static void ShowRecords(List<Record> records)

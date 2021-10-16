@@ -10,13 +10,13 @@ namespace Homework.Data.Repositories.FileRepository.Implementation
 
 		public GetPathResponse GetPath(GetPathRequest request)
 		{
-			// TODO: Get the file path from a given delimiter.
-			string path = string.Empty;
+			// Use verbatim identifier @ to ignore the use of forward slash '/' as an escape character.
+			var path = $@"../Files/{request?.DelimiterName}-delimited.txt";
 
 			return new GetPathResponse
 			{
-				Path = path,
-				Success = path != null
+				Success = path != null,
+				Path = path
 			};
 		}
 		#endregion

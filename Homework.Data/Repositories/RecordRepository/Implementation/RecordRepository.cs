@@ -40,6 +40,8 @@ namespace Homework.Data.Repositories.RecordRepository.Implementation
 		{
 			var records = new List<Record>();
 
+			// TODO: Query the records by the list of sorts in the request.
+
 			return new QueryRecordsResponse
 			{
 				Records = records,

@@ -1,7 +1,15 @@
+using Homework.Data.Repositories.DelimiterRepository;
+using Homework.Data.Repositories.DelimiterRepository.Implementation;
+using Homework.Data.Repositories.FileRepository;
+using Homework.Data.Repositories.FileRepository.Implementation;
 using Homework.Data.Repositories.RecordRepository;
 using Homework.Data.Repositories.RecordRepository.Implementation;
-using Homework.Services.RecordService;
+using Homework.Services.DelimiterService;
+using Homework.Services.DelimiterService.Implementation;
+using Homework.Services.FileService;
+using Homework.Services.FileService.Implementation;
 using Homework.Services.RecordService.Implementation;
+using Homework.Services.RecordService;
 using Homework.Services.RecordService.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +25,11 @@ namespace Homework.App
 			var builder = Host.CreateDefaultBuilder().Build();
 
 			IServiceProvider serviceProvider = new ServiceCollection()
+				.AddScoped<IDelimiterRepository, DelimiterRepository>()
+				.AddScoped<IFileRepository, FileRepository>()
 				.AddScoped<IRecordRepository, RecordRepository>()
+				.AddSingleton<IDelimiterService, DelimiterService>()
+				.AddSingleton<IFileService, FileService>()
 				.AddSingleton<IRecordService, RecordService>()
 				.BuildServiceProvider();
 

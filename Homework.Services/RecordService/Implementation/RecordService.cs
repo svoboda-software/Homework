@@ -1,5 +1,7 @@
 using Homework.Data.Repositories.RecordRepository;
 using FromRepo = Homework.Data.Repositories.RecordRepository.Models;
+using Homework.Services.FileService;
+using Homework.Services.FileService.Models;
 using Homework.Services.RecordService.Models;
 using System.Linq;
 
@@ -8,9 +10,11 @@ namespace Homework.Services.RecordService.Implementation
 	public class RecordService : IRecordService
 	{
 		private readonly IRecordRepository repo;
-		public RecordService(IRecordRepository repo)
+		private readonly IFileService fileService;
+		public RecordService(IRecordRepository repo, IFileService fileService)
 		{
 			this.repo = repo;
+			this.fileService = fileService;
 		}
 
 		#region "Public methods"
@@ -23,8 +27,7 @@ namespace Homework.Services.RecordService.Implementation
 			// Use the record repo to get the records..
 			var records = repo.GetRecords(new FromRepo.GetRecordsRequest
 			{
-				// TODO: Use a file service to return the files in order to request records.
-				// Files = fileService.GetFiles()
+				Files = fileService.GetFiles(new GetFilesRequest())?.Files
 			})?.Records?
 			// Convert from the repo model to the service model.
 			.Select(s => new Record

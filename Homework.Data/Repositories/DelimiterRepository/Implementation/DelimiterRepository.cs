@@ -8,7 +8,7 @@ namespace Homework.Data.Repositories.DelimiterRepository.Implementation
 	public class DelimiterRepository : IDelimiterRepository
 	{
 		// Define the delimiting characters that separate data values in the source files.
-		private readonly Dictionary<string, string> delimiters = new Dictionary<string, string>
+		private readonly Dictionary<string, string> Delimiters = new Dictionary<string, string>
 		{
 			{ "comma", "," },
 			{ "pipe", "|" },
@@ -21,15 +21,17 @@ namespace Homework.Data.Repositories.DelimiterRepository.Implementation
 
 		public GetDelimitersResponse GetDelimiters(GetDelimitersRequest request)
 		{
+			var delimiters = Delimiters.AsEnumerable()
+				.Select(s => new Delimiter
+				{
+					Symbol = s.Value,
+					Name = s.Key
+				}).ToList();
+
 			return new GetDelimitersResponse
 			{
 				Success = delimiters != null,
-				Delimiters = delimiters.AsEnumerable()
-				.Select(s => new Delimiter
-				{
-					Character = s.Value,
-					Name = s.Key
-				}).ToList()
+				Delimiters = delimiters
 			};
 		}
 		#endregion

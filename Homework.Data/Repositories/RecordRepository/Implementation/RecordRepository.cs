@@ -1,5 +1,8 @@
 using Homework.Data.Repositories.RecordRepository.Models;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Homework.Data.Repositories.RecordRepository.Implementation
 {
@@ -10,22 +13,21 @@ namespace Homework.Data.Repositories.RecordRepository.Implementation
 		#region "Public methods"
 
 		/// <summary>
-		/// Returns all records from all file sources.
+		/// Returns all records from the given files.
 		/// <summary>
 		public GetRecordsResponse GetRecords(GetRecordsRequest request)
 		{
 			var records = new List<Record>();
 
-			// TODO: Use System.Linq to parse the list of input files.
-
-			// request?.Files?
-			// .ForEach(f =>
-			// records.AddRange(
-
-			// TODO: Use System.IO to read file into a string array.
-			// TODO: Use System.Linq to project each element of the sequence into a record.
-
-			// .ToList()));
+			request?.Files?
+				.ForEach(f =>
+					records.AddRange(
+					// Lazy load the file with File.ReadLines() instead of loading the entire file into memory with File.ReadAllLines().
+					File.ReadLines(f.Path)
+					.Skip(1)
+					.Select(s => s.Split(f.Delimiter))
+					.Select(s => ToRecord(s))
+					.ToList()));
 
 			return new GetRecordsResponse
 			{
@@ -33,7 +35,24 @@ namespace Homework.Data.Repositories.RecordRepository.Implementation
 				Records = records
 			};
 		}
+		#endregion
 
+		#region "Private methods"
+
+		private Record ToRecord(string[] values)
+		{
+			// Trim all values.
+			values = values.Select(s => s.Trim()).ToArray();
+
+			return new Record
+			{
+				LastName = values[0],
+				FirstName = values[1],
+				Email = values[2],
+				FavoriteColor = values[3],
+				DateOfBirth = Convert.ToDateTime(values[4])
+			};
+		}
 		#endregion
 	}
 }

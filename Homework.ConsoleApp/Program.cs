@@ -51,7 +51,7 @@ namespace Homework.App
 			Console.WriteLine("  - Querying records...");
 
 			var recordService = serviceProvider.GetService<IRecordService>();
-			var response = recordService.GetRecords(new GetRecordsRequest());
+			var records = recordService.GetRecords(new GetRecordsRequest())?.Records;
 		}
 		#endregion
 	}

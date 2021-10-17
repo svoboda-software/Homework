@@ -3,6 +3,7 @@ using FromRepo = Homework.Data.Repositories.RecordRepository.Models;
 using Homework.Services.FileService;
 using Homework.Services.FileService.Models;
 using Homework.Services.RecordService.Models;
+using Homework.Shared.Extensions;
 using System;
 using System.Linq;
 
@@ -31,14 +32,7 @@ namespace Homework.Services.RecordService.Implementation
 				Files = fileService.GetFiles(new GetFilesRequest())?.Files
 			})?.Records?
 			// Convert from the repo model to the service model.
-			.Select(s => new Record
-			{
-				LastName = s.LastName,
-				FirstName = s.FirstName,
-				Email = s.Email,
-				FavoriteColor = s.FavoriteColor,
-				DateOfBirth = s.DateOfBirth.ToString()
-			})
+			.Select(s => ToRecord(s))
 			.ToList();
 
 			return new GetRecordsResponse
@@ -57,30 +51,44 @@ namespace Homework.Services.RecordService.Implementation
 			var sorted = repo.QueryRecords(new FromRepo.QueryRecordsRequest
 			{
 				Sorts = request?.Sorts,
-				// Convert from the service model to the repo entity for the request.
-				Records = records?.Select(s => new FromRepo.Record
-				{
-					LastName = s.LastName,
-					FirstName = s.FirstName,
-					Email = s.Email,
-					FavoriteColor = s.FavoriteColor,
-					DateOfBirth = Convert.ToDateTime(s.DateOfBirth)
-				}).ToList()
-				// Convert from the repo entity to the service model for the response.
-			})?.Records?.Select(s => new Record
-			{
-				LastName = s.LastName,
-				FirstName = s.FirstName,
-				Email = s.Email,
-				FavoriteColor = s.FavoriteColor,
-				DateOfBirth = s.DateOfBirth.ToString()
-			}).ToList();
-
+				Records = records?
+					// Convert from the service model to the repo model.
+					.Select(s => ToRepoRecord(s)).ToList()
+			})?.Records?
+			// Convert from the repo model to the service model.
+			.Select(s => ToRecord(s)).ToList();
 
 			return new QueryRecordsResponse
 			{
 				Success = sorted != null,
 				Records = sorted
+			};
+		}
+		#endregion
+
+		#region "Private methods"
+
+		private Record ToRecord(FromRepo.Record r)
+		{
+			return new Record
+			{
+				LastName = r.LastName,
+				FirstName = r.FirstName,
+				Email = r.Email,
+				FavoriteColor = r.FavoriteColor,
+				DateOfBirth = r.DateOfBirth.ToFormattedDateString()
+			};
+		}
+
+		private FromRepo.Record ToRepoRecord(Record r)
+		{
+			return new FromRepo.Record
+			{
+				LastName = r.LastName,
+				FirstName = r.FirstName,
+				Email = r.Email,
+				FavoriteColor = r.FavoriteColor,
+				DateOfBirth = Convert.ToDateTime(r.DateOfBirth)
 			};
 		}
 		#endregion

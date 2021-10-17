@@ -32,8 +32,26 @@ namespace Homework.Shared.Extensions
 
 		#region "Private methods"
 
+		/// <summary
+		/// Returns the expression needed as a parameter for the OrderBy() and ThenBy() methodss.
 		/// <summary>
-		/// Returns the determination of whether a queryable collection has already been ordered.
+		private static Expression<Func<T, object>> BuildSortExpression<T>(string propertyName)
+		{
+			// Get the parameter expression.
+			var paramExpression = Expression.Parameter(typeof(T));
+			// Get the property expression.
+			var propExpression = Expression.Property(paramExpression, propertyName);
+			var lambdaExpression = Expression.Lambda(propExpression, paramExpression);
+
+			// Use boxing to get a weakly-typed expression.
+			Expression converted = Expression.Convert(lambdaExpression.Body, typeof(object));
+
+			// Use Expression.Lambda to get a strongly-typed expression.
+			return Expression.Lambda<Func<T, object>>(converted, lambdaExpression.Parameters);
+		}
+
+		/// <summary>
+		/// Determines whether a queryable collection has already been ordered.
 		/// <summary>
 		private static bool IsOrdered<T>(this IQueryable<T> source)
 		{
@@ -41,25 +59,23 @@ namespace Homework.Shared.Extensions
 		}
 
 		/// <summary>
-		/// Returns an 'OrderBy' ordered collection for the first sort, then returns a 'ThenBy' ordered collection for all subsequent sorts.
+		/// Returns an ordered queryable collection for each directional sort.
 		/// <summary>
 		private static IOrderedQueryable<T> SortBy<T>(IQueryable<T> source, Sort sort)
 		{
 			var ordered = source as IOrderedQueryable<T>;
 
-			if (source.IsOrdered())
-			{
+			return (source.IsOrdered())
+			?
 				// This is not the first sort.
-				// TODO: Build ThenBy() expression.
-				// ordered.ThenBy
-			}
-			{
-				// This is not the first sort.
-				// TODO: Build OrderBy() expression.
-				// source.OrderBy()
-			}
-
-			return ordered;
+				sort.SortDirection == ListSortDirection.Ascending
+				? ordered.ThenBy(BuildSortExpression<T>(sort.PropertyName))
+				: ordered.ThenByDescending(BuildSortExpression<T>(sort.PropertyName))
+			:
+				// This is the first sort.
+				sort.SortDirection == ListSortDirection.Ascending
+				? source.OrderBy(BuildSortExpression<T>(sort.PropertyName))
+				: source.OrderByDescending(BuildSortExpression<T>(sort.PropertyName));
 		}
 		#endregion
 	}

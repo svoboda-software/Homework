@@ -76,6 +76,7 @@ namespace Homework.Services.RecordService.Implementation
 				FirstName = r.FirstName,
 				Email = r.Email,
 				FavoriteColor = r.FavoriteColor,
+				// Use the record service to handle the business logic of formatting dates.
 				DateOfBirth = r.DateOfBirth.ToFormattedDateString()
 			};
 		}

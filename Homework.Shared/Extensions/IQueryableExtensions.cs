@@ -24,7 +24,7 @@ namespace Homework.Shared.Extensions
 			foreach (var sort in sorts?.Skip(1))
 			{
 				// Perform any ThenBy() sorts in the query.
-				sorted = SortBy<T>(source, sort);
+				sorted = SortBy<T>(ordered, sort);
 			}
 			return sorted.ToList();
 		}

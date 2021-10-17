@@ -47,6 +47,7 @@ namespace Homework.ConsoleApp
 			// Query the records.
 			QueryRecords();
 
+			Console.WriteLine();
 			Console.WriteLine("- Query application ended.");
 			Console.WriteLine();
 		}
@@ -56,6 +57,9 @@ namespace Homework.ConsoleApp
 
 		private static void Query(List<Sort> sorts)
 		{
+			// Show the query to the user.
+			ShowQuery(sorts);
+
 			var recordService = serviceProvider.GetService<IRecordService>();
 			var sortedRecords = recordService.QueryRecords(new QueryRecordsRequest
 			{
@@ -91,18 +95,32 @@ namespace Homework.ConsoleApp
 			}});
 		}
 
-		private static void ShowRecords(List<Record> records)
+		private static void ShowQuery(List<Sort> sorts)
 		{
 			Console.WriteLine();
+			sorts?.ForEach(f =>
+			{
+				var sortBy = f == sorts.FirstOrDefault() ? "Sort by" : "Then by";
+				Console.WriteLine($"    - {sortBy} {f.PropertyName} {f.SortDirection.ToString().ToLower()}");
+			});
+			Console.WriteLine();
+		}
+
+		private static void ShowRecords(List<Record> records)
+		{
 			// Show the column headers.
 			Console.WriteLine($"      {records.First().ColumnHeaders()}");
 
-			// Show a separator line between the column headers and the data.
-			Console.WriteLine($"      {string.Join(" ", string.Concat(Enumerable.Repeat("-", 8)), string.Concat(Enumerable.Repeat("-", 9)), string.Concat(Enumerable.Repeat("-", 12)), string.Concat(Enumerable.Repeat("-", 13)), string.Concat(Enumerable.Repeat("-", 11)))}");
+			// Show separator lines between the column headers and the data.
+			Console.WriteLine($@"      {string.Join(" ",
+				string.Concat(Enumerable.Repeat("-", 8)),
+				string.Concat(Enumerable.Repeat("-", 9)),
+				string.Concat(Enumerable.Repeat("-", 12)),
+				string.Concat(Enumerable.Repeat("-", 13)),
+				string.Concat(Enumerable.Repeat("-", 11)))}");
 
-			// Show the list of records to the user.
+			// Show the sorted list of records to the user.
 			records?.ForEach(f => Console.WriteLine($"      {f.ToString()}"));
-			Console.WriteLine();
 		}
 		#endregion
 	}

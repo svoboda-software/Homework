@@ -42,11 +42,9 @@ namespace Homework.Data.Repositories.RecordRepository.Implementation
 			var records = request.Records
 				// Convert the list to IQueryable.
 				.AsQueryable()
-				// Create an IQueryable extension to add OrderBy() and ThenBy() clauses to the query.
+				// Use an IQueryable extension to add OrderBy() and ThenBy() clauses to the query.
 				.SortBy<Record>(request?.Sorts)
 				.ToList();
-
-			// TODO: Query the records by the list of sorts in the request.
 
 			return new QueryRecordsResponse
 			{

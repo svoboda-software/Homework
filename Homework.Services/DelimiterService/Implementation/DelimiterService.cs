@@ -8,10 +8,7 @@ namespace Homework.Services.DelimiterService.Implementation
 	{
 		private IDelimiterRepository repo { get; }
 
-		public DelimiterService(IDelimiterRepository repo)
-		{
-			this.repo = repo;
-		}
+		public DelimiterService(IDelimiterRepository repo) { this.repo = repo; }
 
 		public GetDelimitersResponse GetDelimiters(GetDelimitersRequest request)
 		{

@@ -1,4 +1,4 @@
-namespace Homework.Shared.Models
+namespace Homework.Services.FileService.Models
 {
 	public class File
 	{

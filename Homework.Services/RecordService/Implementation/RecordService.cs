@@ -1,10 +1,11 @@
 using Homework.Data.Repositories.RecordRepository;
 using FromRepo = Homework.Data.Repositories.RecordRepository.Models;
-using Homework.Services.FileService;
-using Homework.Services.FileService.Models;
+using Homework.Services.DelimiterService;
+using Homework.Services.DelimiterService.Models;
 using Homework.Services.RecordService.Models;
 using Homework.Shared.Extensions;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Homework.Services.RecordService.Implementation
@@ -12,24 +13,25 @@ namespace Homework.Services.RecordService.Implementation
 	public class RecordService : IRecordService
 	{
 		private readonly IRecordRepository repo;
-		private readonly IFileService fileService;
-		public RecordService(IRecordRepository repo, IFileService fileService)
+		private readonly IDelimiterService delimiterService;
+		public RecordService(IRecordRepository repo, IDelimiterService delimiterService)
 		{
 			this.repo = repo;
-			this.fileService = fileService;
+			this.delimiterService = delimiterService;
 		}
 
-		#region "Public methods"
+		#region Public methods
 
 		/// <summary>
 		/// Returns all records from all data files.
 		/// <summary>
 		public GetRecordsResponse GetRecords(GetRecordsRequest request)
 		{
-			// Use the record repo to get the records..
+			// Use the record repo to get the records.
 			var records = repo.GetRecords(new FromRepo.GetRecordsRequest
 			{
-				Files = fileService.GetFiles(new GetFilesRequest())?.Files
+				// Get the delimited values from the data sources.
+				ValueArrays = GetDelimitedValues()
 			})?.Records?
 			// Convert from the repo model to the service model.
 			.Select(s => ToRecord(s))
@@ -66,7 +68,14 @@ namespace Homework.Services.RecordService.Implementation
 		}
 		#endregion
 
-		#region "Private methods"
+		#region Private methods
+
+		private List<string[]> GetDelimitedValues()
+		{
+			return delimiterService.GetDelimitedValues(
+				new GetDelimitedValuesRequest())
+				.Values;
+		}
 
 		private Record ToRecord(FromRepo.Record r)
 		{

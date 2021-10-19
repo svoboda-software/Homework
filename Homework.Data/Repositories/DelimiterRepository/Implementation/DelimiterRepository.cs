@@ -6,32 +6,48 @@ namespace Homework.Data.Repositories.DelimiterRepository.Implementation
 {
 	public class DelimiterRepository : IDelimiterRepository
 	{
-		// Define the delimiting characters that separate data values in the source files.
-		private readonly Dictionary<string, string> Delimiters = new Dictionary<string, string>
+		// Define the data separating delimiters in the source files.
+		private readonly List<Delimiter> delimiters = new List<Delimiter>
 		{
-			{ "comma", "," },
-			{ "pipe", "|" },
-			{ "space", " "}
+			new Delimiter { Character = char.Parse(","), Name = "comma" },
+			new Delimiter { Character = char.Parse("|"), Name = "pipe" },
+			new Delimiter { Character = char.Parse(" "), Name = "space" }
 		};
 
 		public DelimiterRepository() { }
 
-		#region "Public methods"
+		#region Public methods
+		public GetDelimiterResponse GetDelimiter(GetDelimiterRequest request)
+		{
+			var delimiter = GetDelimiter(request.DelimitedValues);
+
+			return new GetDelimiterResponse
+			{
+				Success = !delimiter.Equals(char.Parse("")),
+				Delimiter = delimiter
+			};
+		}
 
 		public GetDelimitersResponse GetDelimiters(GetDelimitersRequest request)
 		{
-			var delimiters = Delimiters.AsEnumerable()
-				.Select(s => new Delimiter
-				{
-					Symbol = s.Value,
-					Name = s.Key
-				}).ToList();
-
 			return new GetDelimitersResponse
 			{
 				Success = delimiters != null,
 				Delimiters = delimiters
 			};
+		}
+
+		#endregion
+
+		#region Private methods
+
+		private char GetDelimiter(string delimitedValues)
+		{
+			var delimiter = delimiters
+				.Where(w => delimitedValues.Contains(w.Character))
+				.FirstOrDefault()
+				.Character;
+			return delimiter;
 		}
 		#endregion
 	}

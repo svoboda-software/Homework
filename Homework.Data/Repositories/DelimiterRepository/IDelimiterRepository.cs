@@ -5,6 +5,7 @@ namespace Homework.Data.Repositories.DelimiterRepository
 
 	public interface IDelimiterRepository
 	{
+		GetDelimiterResponse GetDelimiter(GetDelimiterRequest request);
 		GetDelimitersResponse GetDelimiters(GetDelimitersRequest request);
 	}
 }

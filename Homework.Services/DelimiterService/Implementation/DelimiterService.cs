@@ -2,6 +2,7 @@ using Homework.Data.Repositories.DelimiterRepository;
 using FromRepo = Homework.Data.Repositories.DelimiterRepository.Models;
 using Homework.Services.DelimiterService.Models;
 using Homework.Services.FileService;
+using Homework.Services.FileService.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,6 +20,22 @@ namespace Homework.Services.DelimiterService.Implementation
 		}
 
 		#region Public methods
+
+		/// <summary>
+		/// Returns a list of value arrays from the data files.
+		/// <summary>
+		public GetDelimitedValuesResponse GetDelimitedValues(GetDelimitedValuesRequest request)
+		{
+			var filePaths = GetPaths(GetDelimiters());
+			var fileLines = GetLines(filePaths);
+			var values = SplitValues(fileLines);
+
+			return new GetDelimitedValuesResponse
+			{
+				Success = values != null,
+				Values = values
+			};
+		}
 
 		/// <summary>
 		/// Returns the delimiter from a given delimited value string.
@@ -47,20 +64,6 @@ namespace Homework.Services.DelimiterService.Implementation
 				Delimiters = delimiters
 			};
 		}
-
-		/// <summary>
-		/// Returns a value array for each given delimited data string.
-		/// <summary>
-		public SplitValuesResponse SplitValues(SplitValuesRequest request)
-		{
-			var valueArrays = SplitValues(request?.DelimitedValues);
-
-			return new SplitValuesResponse
-			{
-				Success = valueArrays != null,
-				ValueArrays = valueArrays
-			};
-		}
 		#endregion
 
 		#region Private methods
@@ -86,6 +89,29 @@ namespace Homework.Services.DelimiterService.Implementation
 						Character = s.Character,
 						Name = s.Name
 					}).ToList();
+		}
+
+		private List<string> GetLines(List<string> paths)
+		{
+			// Use the file service to get the lines in the data files.
+			return fileService.GetLines(
+				new GetLinesRequest
+				{
+					FilePaths = paths
+				}).FileLines;
+		}
+
+		private List<string> GetPaths(List<Delimiter> delimiters)
+		{
+			var delimiterNames = delimiters?
+				.Select(s => s.Name).ToList();
+
+			// Use the file service to get the paths of the data files.
+			return fileService.GetPaths(
+				new GetPathsRequest
+				{
+					DelimiterNames = delimiterNames
+				}).FilePaths;
 		}
 
 		private List<string[]> SplitValues(List<string> delimitedValues)

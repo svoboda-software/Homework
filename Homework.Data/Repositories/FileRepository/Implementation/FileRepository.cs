@@ -1,4 +1,6 @@
+using Homework.Data.Repositories.FileRepository.Extensions;
 using Homework.Data.Repositories.FileRepository.Models;
+using System.Linq;
 
 namespace Homework.Data.Repositories.FileRepository.Implementation
 {
@@ -6,17 +8,20 @@ namespace Homework.Data.Repositories.FileRepository.Implementation
 	{
 		public FileRepository() { }
 
-		#region "Public methods"
-
-		public GetPathResponse GetPath(GetPathRequest request)
+		#region Public methods
+		/// <summary>
+		/// Returns a delimited data file path given the delimiter name.
+		/// <summary>
+		public GetPathsResponse GetPaths(GetPathsRequest request)
 		{
-			// Use verbatim identifier @ to ignore the use of forward slash '/' as an escape character.
-			var path = $@"../Files/{request?.DelimiterName}-delimited.txt";
+			var paths = request.DelimiterNames
+				?.Select(s => s.ToPath())
+				?.ToList();
 
-			return new GetPathResponse
+			return new GetPathsResponse
 			{
-				Success = path != null,
-				Path = path
+				Success = paths != null,
+				Paths = paths
 			};
 		}
 		#endregion

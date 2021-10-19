@@ -4,6 +4,6 @@ namespace Homework.Data.Repositories.FileRepository
 {
 	public interface IFileRepository
 	{
-		GetPathResponse GetPath(GetPathRequest request);
+		GetPathsResponse GetPaths(GetPathsRequest request);
 	}
 }

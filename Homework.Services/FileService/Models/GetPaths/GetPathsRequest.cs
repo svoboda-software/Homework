@@ -1,11 +1,10 @@
 using Homework.Shared.Base;
-using Homework.Shared.Models;
 using System.Collections.Generic;
 
 namespace Homework.Services.FileService.Models
 {
-	public class GetFilesResponse : ResponseBase
+	public class GetPathsRequest : RequestBase
 	{
-		public List<File> Files { get; set; }
+		public List<string> DelimiterNames { get; set; }
 	}
 }

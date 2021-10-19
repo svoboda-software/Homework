@@ -4,6 +4,6 @@ namespace Homework.Services.FileService
 {
 	public interface IFileService
 	{
-		GetFilesResponse GetFiles(GetFilesRequest request);
+		public GetPathsResponse GetPaths(GetPathsRequest request);
 	}
 }

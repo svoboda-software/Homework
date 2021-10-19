@@ -7,5 +7,6 @@ namespace Homework.Data.Repositories.DelimiterRepository
 	{
 		GetDelimiterResponse GetDelimiter(GetDelimiterRequest request);
 		GetDelimitersResponse GetDelimiters(GetDelimitersRequest request);
+		SplitValuesResponse SplitValues(SplitValuesRequest request);
 	}
 }

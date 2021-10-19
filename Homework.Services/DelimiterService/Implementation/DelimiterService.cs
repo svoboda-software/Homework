@@ -47,6 +47,20 @@ namespace Homework.Services.DelimiterService.Implementation
 				Delimiters = delimiters
 			};
 		}
+
+		/// <summary>
+		/// Returns a value array for each given delimited data string.
+		/// <summary>
+		public SplitValuesResponse SplitValues(SplitValuesRequest request)
+		{
+			var valueArrays = SplitValues(request?.DelimitedValues);
+
+			return new SplitValuesResponse
+			{
+				Success = valueArrays != null,
+				ValueArrays = valueArrays
+			};
+		}
 		#endregion
 
 		#region Private methods
@@ -72,6 +86,16 @@ namespace Homework.Services.DelimiterService.Implementation
 						Character = s.Character,
 						Name = s.Name
 					}).ToList();
+		}
+
+		private List<string[]> SplitValues(List<string> delimitedValues)
+		{
+			// Use the delimiter repository to get the list of value arrays.
+			return repo.SplitValues(
+				new FromRepo.SplitValuesRequest
+				{
+					DelimitedValues = delimitedValues
+				}).ValueArrays;
 		}
 		#endregion
 	}

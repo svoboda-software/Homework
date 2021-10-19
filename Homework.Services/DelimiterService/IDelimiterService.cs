@@ -6,5 +6,6 @@ namespace Homework.Services.DelimiterService
 	{
 		GetDelimiterResponse GetDelimiter(GetDelimiterRequest request);
 		GetDelimitersResponse GetDelimiters(GetDelimitersRequest request);
+		SplitValuesResponse SplitValues(SplitValuesRequest request);
 	}
 }

@@ -14,6 +14,25 @@ namespace Homework.Services.FileService.Implementation
 		}
 
 		#region Public methods
+
+		/// <summary>
+		/// Returns a combined list of strings from a given list of text file paths.
+		/// <summary>
+		public GetLinesResponse GetLines(GetLinesRequest request)
+		{
+			var lines = repo.GetLines(
+				new FromRepo.GetLinesRequest
+				{
+					Paths = request?.FilePaths
+				})?.Lines;
+
+			return new GetLinesResponse
+			{
+				Success = lines != null,
+				FileLines = lines
+			};
+		}
+
 		/// <summary>
 		/// Returns a delimited data file path given the delimiter name.
 		/// <summary>

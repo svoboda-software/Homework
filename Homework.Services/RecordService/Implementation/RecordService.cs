@@ -2,10 +2,12 @@ using Homework.Data.Repositories.RecordRepository;
 using FromRepo = Homework.Data.Repositories.RecordRepository.Models;
 using Homework.Services.DelimiterService;
 using Homework.Services.DelimiterService.Models;
+using Homework.Services.RecordService.Extensions;
 using Homework.Services.RecordService.Models;
 using Homework.Shared.Extensions;
-using System;
+using Homework.Shared.Models;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Homework.Services.RecordService.Implementation
@@ -27,15 +29,7 @@ namespace Homework.Services.RecordService.Implementation
 		/// <summary>
 		public GetRecordsResponse GetRecords(GetRecordsRequest request)
 		{
-			// Use the record repo to get the records.
-			var records = repo.GetRecords(new FromRepo.GetRecordsRequest
-			{
-				// Get the delimited values from the data sources.
-				ValueArrays = GetDelimitedValues()
-			})?.Records?
-			// Convert from the repo model to the service model.
-			.Select(s => ToRecord(s))
-			.ToList();
+			var records = GetRecords();
 
 			return new GetRecordsResponse
 			{
@@ -44,26 +38,44 @@ namespace Homework.Services.RecordService.Implementation
 			};
 		}
 
+		/// <summary>
+		/// Returns all sorted records from all data files given a property to sort.
+		/// <summary>
+		public QueryPropertyResponse QueryProperty(QueryPropertyRequest request)
+		{
+			// Build the sorts.
+			var sorts = new List<Sort>
+			{
+				new Sort
+				{
+					// Use string extension ToParsedPropertyName() to map api routes to Record property names.
+					PropertyName = request.PropertyName.ToParsedPropertyName(),
+					SortDirection = ListSortDirection.Ascending
+				}
+			};
+			// Query the records.
+			var sortedRecords = QueryRecords(GetRecords(), sorts);
+
+			return new QueryPropertyResponse
+			{
+				Success = sortedRecords != null,
+				Records = sortedRecords
+			};
+
+		}
+
+		/// <summary>
+		/// Returns all sorted records from all data files given a list of sorts.
+		/// <summary>
 		public QueryRecordsResponse QueryRecords(QueryRecordsRequest request)
 		{
-			// Get the records.
-			var records = GetRecords(new GetRecordsRequest())?.Records;
-
 			// Query the records.
-			var sorted = repo.QueryRecords(new FromRepo.QueryRecordsRequest
-			{
-				Sorts = request?.Sorts,
-				Records = records?
-					// Convert from the service model to the repo model.
-					.Select(s => ToRepoRecord(s)).ToList()
-			})?.Records?
-			// Convert from the repo model to the service model.
-			.Select(s => ToRecord(s)).ToList();
+			var sortedRecords = QueryRecords(GetRecords(), request.Sorts);
 
 			return new QueryRecordsResponse
 			{
-				Success = sorted != null,
-				Records = sorted
+				Success = sortedRecords != null,
+				Records = sortedRecords
 			};
 		}
 		#endregion
@@ -72,9 +84,44 @@ namespace Homework.Services.RecordService.Implementation
 
 		private List<string[]> GetDelimitedValues()
 		{
-			return delimiterService.GetDelimitedValues(
-				new GetDelimitedValuesRequest())
-				.Values;
+			return delimiterService.GetDelimitedValues(new GetDelimitedValuesRequest()).Values;
+		}
+
+		private List<Record> GetRecords()
+		{
+			// Use the record repo to get the records.
+			return repo.GetRecords(new FromRepo.GetRecordsRequest
+			{
+				// Get the delimited values from the data sources.
+				ValueArrays = GetDelimitedValues()
+			})?.Records?
+			// Convert from the repo model to the service model.
+			.Select(s => ToRecord(s))
+			.ToList();
+		}
+
+		private List<Sort> ParseSorts(List<Sort> sorts)
+		{
+			return sorts?.Select(s => new Sort
+			{
+				// Use string extension ToParsedPropertyName() to map api routes to Record property names.
+				PropertyName = s.PropertyName.ToParsedPropertyName(),
+				SortDirection = s.SortDirection
+			}).ToList();
+		}
+
+		private List<Record> QueryRecords(List<Record> records, List<Sort> sorts)
+		{
+			// Use the Record repository to get the sorted records.
+			return repo.QueryRecords(new FromRepo.QueryRecordsRequest
+			{
+				Sorts = sorts,
+				Records = records?
+					// Convert from the service model to the repo model.
+					.Select(s => ToRepoRecord(s)).ToList()
+			})?.Records?
+			// Convert from the repo model to the service model.
+			.Select(s => ToRecord(s)).ToList();
 		}
 
 		private Record ToRecord(FromRepo.Record r)
@@ -85,7 +132,7 @@ namespace Homework.Services.RecordService.Implementation
 				FirstName = r.FirstName,
 				Email = r.Email,
 				FavoriteColor = r.FavoriteColor,
-				// Use the record service to handle the business logic of formatting dates.
+				// Use the Record service to handle the business logic of formatting dates.
 				DateOfBirth = r.DateOfBirth.ToFormattedDateString()
 			};
 		}
@@ -98,7 +145,8 @@ namespace Homework.Services.RecordService.Implementation
 				FirstName = r.FirstName,
 				Email = r.Email,
 				FavoriteColor = r.FavoriteColor,
-				DateOfBirth = Convert.ToDateTime(r.DateOfBirth)
+				// Use DateTime extension to handle bad date data.
+				DateOfBirth = r.DateOfBirth.ToParsedDate()
 			};
 		}
 		#endregion

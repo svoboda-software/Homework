@@ -9,7 +9,7 @@ namespace Homework.Shared.Extensions
 {
 	public static class IQueryableExtensions
 	{
-		#region "Public methods"
+		#region Public methods
 
 		/// <summary>
 		/// Returns a sorted list by handling the directional sorting of a queryable collection.
@@ -30,7 +30,7 @@ namespace Homework.Shared.Extensions
 		}
 		#endregion
 
-		#region "Private methods"
+		#region Private methods
 
 		/// <summary
 		/// Returns the expression needed as a parameter for the OrderBy() and ThenBy() methodss.

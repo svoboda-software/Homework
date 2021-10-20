@@ -25,7 +25,7 @@ namespace Homework.ConsoleApp
 	{
 		public static IServiceProvider serviceProvider { get; set; }
 
-		#region "Public methods"
+		#region Public methods
 
 		public static void Main(string[] args)
 		{
@@ -53,7 +53,7 @@ namespace Homework.ConsoleApp
 		}
 		#endregion
 
-		#region "Private methods"
+		#region Private methods
 
 		private static void Query(List<Sort> sorts)
 		{

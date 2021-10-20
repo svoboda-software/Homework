@@ -1,6 +1,5 @@
 using Homework.Data.Repositories.RecordRepository.Models;
 using Homework.Shared.Extensions;
-using System;
 using System.Linq;
 
 namespace Homework.Data.Repositories.RecordRepository.Implementation
@@ -53,11 +52,11 @@ namespace Homework.Data.Repositories.RecordRepository.Implementation
 
 			return new Record
 			{
-				LastName = v?[0],
-				FirstName = v?[1],
-				Email = v?[2],
-				FavoriteColor = v?[3],
-				DateOfBirth = Convert.ToDateTime(v[4])
+				LastName = v[0],
+				FirstName = v[1],
+				Email = v[2],
+				FavoriteColor = v[3],
+				DateOfBirth = v[4].ToParsedDate()
 			};
 		}
 		#endregion

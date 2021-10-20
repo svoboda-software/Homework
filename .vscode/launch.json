@@ -13,5 +13,17 @@
 			"stopAtEntry": false,
 			"internalConsoleOptions": "openOnSessionStart",
 		},
+		{
+			"name": ".NET Core Launch - Homework Step 1 (Console App)",
+			"type": "coreclr",
+			"request": "launch",
+			"preLaunchTask": "Build Homework.UnitTests",
+			"program": "${workspaceFolder}/Homework.ConsoleApp/bin/Debug/netcoreapp3.1/Homework.ConsoleApp.dll",
+			"args": [],
+			"cwd": "${workspaceFolder}/Homework.ConsoleApp",
+			"console": "externalTerminal",
+			"stopAtEntry": false,
+			"internalConsoleOptions": "openOnSessionStart",
+		},
     ]
 }

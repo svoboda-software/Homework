@@ -1,0 +1,5 @@
+LastName FirstName Email FavoriteColor DateOfBirth
+Augustin Christian abcd@aaa.com orange-yellow 1/1/2000
+Benjamin Cristiano abcc@bbb.com orange-maroon 12/31/1999
+Campbell Churchill cccc@ccc.com maroon-orange 12/31/1999
+Columbus Christine cccc@ccc.net indigo-purple 1/1/2000

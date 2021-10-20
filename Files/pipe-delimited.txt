@@ -1,0 +1,5 @@
+LastName | FirstName | Email | FavoriteColor | DateOfBirth
+Anderson | Alexander | alex@aaa.com | orange-yellow | 1/3/2000
+Anderson | Broderick | brod@aol.com | purple-indigo | 2/2/2000
+Bradshaw | Broderick | zzzz@aol.com | yellow-orange | 2/2/2001
+Crawford | Charlotte | char@zzz.com | violet-purple | 1/4/2000

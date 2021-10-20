@@ -46,7 +46,7 @@ namespace Homework.Services.DelimiterService.Implementation
 
 			return new GetDelimiterResponse
 			{
-				Success = !delimiter.Equals(char.Parse("")),
+				Success = true, // !delimiter.Equals(char.Parse("")),
 				Delimiter = delimiter
 			};
 		}

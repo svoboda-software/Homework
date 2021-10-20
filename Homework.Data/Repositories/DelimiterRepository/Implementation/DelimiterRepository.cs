@@ -23,7 +23,7 @@ namespace Homework.Data.Repositories.DelimiterRepository.Implementation
 		/// <summary>
 		public GetDelimiterResponse GetDelimiter(GetDelimiterRequest request)
 		{
-			var delimiter = GetDelimiter(request.DelimitedValues);
+			char delimiter = GetDelimiter(request.DelimitedValues);
 
 			return new GetDelimiterResponse
 			{
@@ -61,11 +61,10 @@ namespace Homework.Data.Repositories.DelimiterRepository.Implementation
 		private char GetDelimiter(string delimitedValues)
 		{
 			/// Returns the delimiting character from a character-delimited string.
-			var delimiter = delimiters
+			return delimiters
 				.Where(w => delimitedValues.Contains(w.Character))
 				.FirstOrDefault()
 				.Character;
-			return delimiter;
 		}
 		#endregion
 	}

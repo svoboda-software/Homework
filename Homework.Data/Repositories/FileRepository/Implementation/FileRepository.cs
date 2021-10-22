@@ -36,7 +36,21 @@ namespace Homework.Data.Repositories.FileRepository.Implementation
 		}
 
 		/// <summary>
-		/// Returns a delimited data file path given the name of a delimitierZZZZZZZ.
+		/// Returns a delimited data file path given a delimiter name.
+		/// <summary>
+		public GetPathResponse GetPath(GetPathRequest request)
+		{
+			var path = request.DelimiterName.ToPath();
+
+			return new GetPathResponse
+			{
+				Success = path != null,
+				Path = path
+			};
+		}
+
+		/// <summary>
+		/// Returns a list of delimited data file paths given a list of delimiter names.
 		/// <summary>
 		public GetPathsResponse GetPaths(GetPathsRequest request)
 		{

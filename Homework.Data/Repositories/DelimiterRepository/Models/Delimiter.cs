@@ -4,5 +4,6 @@ namespace Homework.Data.Repositories.DelimiterRepository.Models
 	{
 		public char Character { get; set; }
 		public string Name { get; set; }
+		public string FilePath { get; set; }
 	}
 }

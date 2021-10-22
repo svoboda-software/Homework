@@ -15,7 +15,7 @@ namespace Homework.UnitTests.UnitTests.Services.DelimiterService.UnitTests
 
 		[Fact]
 		// Unit test naming convention: MethodTested_ExpectedResponse_StateUnderTest
-		public void GetValuesFromDelimiter_ReturnsSuccess_NullRequest()
+		public void GetValuesFromDelimiter_ReturnsSuccess_CommaDelimited()
 		{
 			// Arrange.
 			// Mock the repo response from GetDelimiter().

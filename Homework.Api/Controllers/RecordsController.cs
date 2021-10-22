@@ -16,6 +16,16 @@ namespace Homework.Api.Controllers
 			this.recordService = recordService;
 		}
 
+		[Route("[controller]")]
+		[HttpPost]
+		public ApiResponse<AddRecordResponse> AddRecord(ApiRequest<AddRecordRequest> request)
+		{
+			var response = new ApiResponse<AddRecordResponse>();
+			response.Data = recordService.AddRecord(request.Arguments);
+			response.StatusCode = StatusCodes.Status200OK;
+			return response;
+		}
+
 		[Route("[controller]/{propertyName?}")]
 		[HttpGet]
 		public ApiResponse<QueryPropertyResponse> QueryRecords(string propertyName)

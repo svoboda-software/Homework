@@ -1,0 +1,155 @@
+{
+	"info": {
+		"_postman_id": "7858801d-5ddf-41eb-8505-0dd6191c50a0",
+		"name": "Homework",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "records",
+			"item": [
+				{
+					"name": "POST/records",
+					"item": [
+						{
+							"name": "comma-delimited",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Arguments\": \n    {\n        \"DelimitedValues\": \"Comma, Jim, jimc@aol.com, maroon-orange, 05/09/1999\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/records",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"records"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "pipe-delimited",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Arguments\": \n    {\n        \"DelimitedValues\": \"Pipe | Bob | bob.smith@aol.com | yellow-orange | 5/21/1996\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/record/add-record",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"record",
+										"add-record"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "space-delimited",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"Arguments\": \n    {\n        \"DelimitedValues\": \"Pipe | Bob | bob.smith@aol.com | yellow-orange | 5/21/1996\"\n    }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:5000/record/add-record",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "5000",
+									"path": [
+										"record",
+										"add-record"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET/records",
+					"item": [
+						{
+							"name": "birthdate",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"response": []
+						},
+						{
+							"name": "color",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"response": []
+						},
+						{
+							"name": "name",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": null
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

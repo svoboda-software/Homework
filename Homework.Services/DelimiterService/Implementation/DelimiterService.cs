@@ -46,7 +46,7 @@ namespace Homework.Services.DelimiterService.Implementation
 
 			return new GetDelimiterResponse
 			{
-				Success = true, // !delimiter.Equals(char.Parse("")),
+				Success = delimiter != null,
 				Delimiter = delimiter
 			};
 		}
@@ -68,14 +68,19 @@ namespace Homework.Services.DelimiterService.Implementation
 
 		#region Private methods
 
-		private char GetDelimiter(string values)
+		private Delimiter GetDelimiter(string values)
 		{
 			// Use the delimiter repository to get the delimiter from a delimited value string.
-			return repo.GetDelimiter(
-				new FromRepo.GetDelimiterRequest
-				{
-					DelimitedValues = values
-				}).Delimiter;
+			var delimiter = repo.GetDelimiter(
+				new FromRepo.GetDelimiterRequest { DelimitedValues = values })
+				.Delimiter;
+
+			return new Delimiter
+			{
+				Character = delimiter.Character,
+				FilePath = GetPath(delimiter.Name),
+				Name = delimiter.Name
+			};
 		}
 
 		private List<Delimiter> GetDelimiters()
@@ -87,6 +92,7 @@ namespace Homework.Services.DelimiterService.Implementation
 					.Select(s => new Delimiter
 					{
 						Character = s.Character,
+						FilePath = s.FilePath,
 						Name = s.Name
 					}).ToList();
 		}
@@ -99,6 +105,16 @@ namespace Homework.Services.DelimiterService.Implementation
 				{
 					FilePaths = paths
 				}).FileLines;
+		}
+
+		private string GetPath(string delimiterName)
+		{
+			// Use the file service to get the path of the data file.
+			return fileService.GetPath(
+				new GetPathRequest
+				{
+					DelimiterName = delimiterName
+				}).FilePath;
 		}
 
 		private List<string> GetPaths(List<Delimiter> delimiters)

@@ -12,6 +12,29 @@ namespace Homework.Data.Repositories.RecordRepository.Implementation
 		#region Public methods
 
 		/// <summary>
+		/// Add the record to the data file.
+		/// <summary>
+		public AddRecordResponse AddRecord(AddRecordRequest request)
+		{
+			bool success = false;
+
+			// Make an assumption that the file will exist, and we don't need to create a file.
+			if (File.Exists(request.Path))
+			{
+				using (StreamWriter stream = File.AppendText(request.Path))
+				{
+					stream.WriteLine(request.DelimitedValues);
+					success = true;
+				}
+			}
+
+			return new AddRecordResponse
+			{
+				Success = success
+			};
+		}
+
+		/// <summary>
 		/// Returns a single record from a given value array.
 		/// <summary>
 		public GetRecordResponse GetRecord(GetRecordRequest request)

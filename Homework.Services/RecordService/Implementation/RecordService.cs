@@ -25,6 +25,25 @@ namespace Homework.Services.RecordService.Implementation
 		#region Public methods
 
 		/// <summary>
+		/// Returns the record after adding delimited values to a delimited text file.
+		/// <summary>
+		public AddRecordResponse AddRecord(AddRecordRequest request)
+		{
+			var delimitedValues = request.DelimitedValues;
+			// Get the deliminating character and the path to the delimited data file.
+			var delimiter = GetDelimiter(delimitedValues);
+
+			// Use the repository to add the record to the file.
+			var addRecordResponse = AddRecord(delimitedValues, delimiter.FilePath);
+
+			return new AddRecordResponse
+			{
+				Success = addRecordResponse.Success,
+				Record = addRecordResponse.Record
+			};
+		}
+
+		/// <summary>
 		/// Returns all records from all data files.
 		/// <summary>
 		public GetRecordsResponse GetRecords(GetRecordsRequest request)
@@ -81,6 +100,30 @@ namespace Homework.Services.RecordService.Implementation
 		#endregion
 
 		#region Private methods
+		private AddRecordResponse AddRecord(string delimitedValues, string path)
+		{
+			var record = new Record();
+
+			var addRecordResponse = repo.AddRecord(
+				new FromRepo.AddRecordRequest
+				{
+					DelimitedValues = delimitedValues,
+					Path = path
+				});
+
+			if (addRecordResponse.Success)
+			{
+				// Convert the delimited values to a Record.
+				record = GetRecord(delimitedValues);
+			}
+
+			return new AddRecordResponse
+			{
+				Success = addRecordResponse.Success,
+				// Convert from the repository Record model to the service Record model.
+				Record = record
+			};
+		}
 
 		private Delimiter GetDelimiter(string delimitedValues)
 		{

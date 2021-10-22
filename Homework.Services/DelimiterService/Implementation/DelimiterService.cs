@@ -22,7 +22,7 @@ namespace Homework.Services.DelimiterService.Implementation
 		#region Public methods
 
 		/// <summary>
-		/// Returns a list of value arrays from the data files.
+		/// Returns a list of value arrays from all delimited data files.
 		/// <summary>
 		public GetValuesFromAllDelimitersResponse GetValuesFromAllDelimiters(GetValuesFromAllDelimitersRequest request)
 		{
@@ -35,6 +35,21 @@ namespace Homework.Services.DelimiterService.Implementation
 				Success = valuesList != null,
 				ValuesList = valuesList
 			};
+		}
+
+		/// <summary>
+		/// Returns a value array from a given character-delimited string.
+		/// <summary>
+		public GetValuesFromDelimiterResponse GetValuesFromDelimiter(GetValuesFromDelimiterRequest request)
+		{
+			var values = SplitValues(request.DelimitedValues);
+
+			return new GetValuesFromDelimiterResponse
+			{
+				Success = values != null,
+				Values = values
+			};
+
 		}
 
 		/// <summary>
@@ -78,7 +93,7 @@ namespace Homework.Services.DelimiterService.Implementation
 			return new Delimiter
 			{
 				Character = delimiter.Character,
-				FilePath = delimiter.FilePath,
+				FilePath = GetPath(delimiter.Name),
 				Name = delimiter.Name
 			};
 		}

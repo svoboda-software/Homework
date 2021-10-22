@@ -1,8 +1,9 @@
 using Homework.Shared.Base;
 using System.Collections.Generic;
-namespace Homework.Data.Repositories.RecordRepository.Models
+
+namespace Homework.Services.DelimiterService.Models
 {
-	public class GetRecordsRequest : RequestBase
+	public class GetValuesFromAllDelimitersResponse : ResponseBase
 	{
 		public List<string[]> ValuesList { get; set; }
 	}

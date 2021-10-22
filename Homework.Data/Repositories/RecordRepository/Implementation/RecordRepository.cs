@@ -1,5 +1,6 @@
 using Homework.Data.Repositories.RecordRepository.Models;
 using Homework.Shared.Extensions;
+using System.IO;
 using System.Linq;
 
 namespace Homework.Data.Repositories.RecordRepository.Implementation
@@ -11,11 +12,48 @@ namespace Homework.Data.Repositories.RecordRepository.Implementation
 		#region Public methods
 
 		/// <summary>
+		/// Add the record to the data file.
+		/// <summary>
+		public AddRecordResponse AddRecord(AddRecordRequest request)
+		{
+			bool success = false;
+
+			// Make an assumption that the file will exist, and we don't need to create a file.
+			if (File.Exists(request.Path))
+			{
+				using (StreamWriter stream = File.AppendText(request.Path))
+				{
+					stream.WriteLine(request.DelimitedValues);
+					success = true;
+				}
+			}
+
+			return new AddRecordResponse
+			{
+				Success = success
+			};
+		}
+
+		/// <summary>
+		/// Returns a single record from a given value array.
+		/// <summary>
+		public GetRecordResponse GetRecord(GetRecordRequest request)
+		{
+			var record = ToRecord(request.Values);
+
+			return new GetRecordResponse
+			{
+				Success = record != null,
+				Record = record
+			};
+		}
+
+		/// <summary>
 		/// Returns all records from the given value array.
 		/// <summary>
 		public GetRecordsResponse GetRecords(GetRecordsRequest request)
 		{
-			var records = request.ValueArrays
+			var records = request.ValuesList
 				.Select(s => ToRecord(s))
 				.ToList();
 

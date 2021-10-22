@@ -4,6 +4,6 @@ namespace Homework.Data.Repositories.DelimiterRepository.Models
 {
 	public class GetDelimiterResponse : ResponseBase
 	{
-		public char Delimiter { get; set; }
+		public Delimiter Delimiter { get; set; }
 	}
 }

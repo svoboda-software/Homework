@@ -23,11 +23,11 @@ namespace Homework.Data.Repositories.DelimiterRepository.Implementation
 		/// <summary>
 		public GetDelimiterResponse GetDelimiter(GetDelimiterRequest request)
 		{
-			char delimiter = GetDelimiter(request.DelimitedValues);
+			var delimiter = GetDelimiter(request.DelimitedValues);
 
 			return new GetDelimiterResponse
 			{
-				Success = !delimiter.Equals(char.Parse("")),
+				Success = delimiter != null,
 				Delimiter = delimiter
 			};
 		}
@@ -43,28 +43,42 @@ namespace Homework.Data.Repositories.DelimiterRepository.Implementation
 
 		public SplitValuesResponse SplitValues(SplitValuesRequest request)
 		{
-			var valueArrays = request.DelimitedValues
-				// Split on any known delimiter in the string.
-				.Select(s => s.Split(GetDelimiter(s)))
-				.ToList();
+			var delimitedValues = request.DelimitedValues;
+
+			var values = delimitedValues.Split(
+				GetDelimiter(delimitedValues).Character);
 
 			return new SplitValuesResponse
 			{
-				Success = valueArrays != null,
-				ValueArrays = valueArrays
+				Success = values != null,
+				Values = values
+			};
+		}
+
+		public SplitValuesListResponse SplitValuesList(SplitValuesListRequest request)
+		{
+			var valuesList = request.DelimitedValuesList
+				// Split on any known delimiter in the string.
+				.Select(s => s.Split(
+					GetDelimiter(s).Character))
+				.ToList();
+
+			return new SplitValuesListResponse
+			{
+				Success = valuesList != null,
+				ValuesList = valuesList
 			};
 		}
 		#endregion
 
 		#region Private methods
 
-		private char GetDelimiter(string delimitedValues)
+		private Delimiter GetDelimiter(string delimitedValues)
 		{
 			/// Returns the delimiting character from a character-delimited string.
 			return delimiters
 				.Where(w => delimitedValues.Contains(w.Character))
-				.FirstOrDefault()
-				.Character;
+				.FirstOrDefault();
 		}
 		#endregion
 	}

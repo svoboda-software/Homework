@@ -59,7 +59,10 @@ namespace Homework.UnitTests.UnitTests.Services.DelimiterService.UnitTests
 			var sut = new FromService.DelimiterService(mockRepo.Object, mockfileService.Object);
 
 			// Act.
-			var response = sut.GetValuesFromDelimiter(new GetValuesFromDelimiterRequest());
+			var response = sut.GetValuesFromDelimiter(new GetValuesFromDelimiterRequest
+			{
+				DelimitedValues = "Tester, Tommy, tommy@aol.com, aqua, 3/12/1990"
+			});
 
 			// Assert.
 			Assert.True(response.Values.Length > 0);

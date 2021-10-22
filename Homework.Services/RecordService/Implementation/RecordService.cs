@@ -82,9 +82,46 @@ namespace Homework.Services.RecordService.Implementation
 
 		#region Private methods
 
-		private List<string[]> GetDelimitedValues()
+		private Delimiter GetDelimiter(string delimitedValues)
 		{
-			return delimiterService.GetDelimitedValues(new GetDelimitedValuesRequest()).Values;
+			// Use the delimiterService to get the delimiting character and the path to the delimited data file.
+			return delimiterService.GetDelimiter(
+				new GetDelimiterRequest { DelimitedValues = delimitedValues })
+				.Delimiter;
+		}
+
+		private string[] GetValuesFromDelimiter(string delimitedValues)
+		{
+			return delimiterService.GetValuesFromDelimiter(
+				new GetValuesFromDelimiterRequest
+				{ DelimitedValues = delimitedValues })
+				.Values;
+		}
+
+		private List<string[]> GetValuesFromAllDelimiters()
+		{
+			return delimiterService.GetValuesFromAllDelimiters(
+				new GetValuesFromAllDelimitersRequest())
+				.ValuesList;
+		}
+
+		/// <summary>
+		/// Returns the record object and data source file name based on the delimited values.
+		/// <summary>
+		private Record GetRecord(string delimitedValues)
+		{
+			// Use the delimiter service to extract the delimiting character from the delimited string.
+			var valuesList = delimiterService.GetValuesFromDelimiter(
+				new GetValuesFromDelimiterRequest
+				{ DelimitedValues = delimitedValues })
+				.Values;
+
+			var repoRecord = repo.GetRecord(
+				new FromRepo.GetRecordRequest
+				{ Values = valuesList })
+				.Record;
+
+			return ToServiceRecord(repoRecord);
 		}
 
 		private List<Record> GetRecords()
@@ -93,10 +130,10 @@ namespace Homework.Services.RecordService.Implementation
 			return repo.GetRecords(new FromRepo.GetRecordsRequest
 			{
 				// Get the delimited values from the data sources.
-				ValueArrays = GetDelimitedValues()
+				ValuesList = GetValuesFromAllDelimiters()
 			})?.Records?
 			// Convert from the repo model to the service model.
-			.Select(s => ToRecord(s))
+			.Select(s => ToServiceRecord(s))
 			.ToList();
 		}
 
@@ -121,10 +158,10 @@ namespace Homework.Services.RecordService.Implementation
 					.Select(s => ToRepoRecord(s)).ToList()
 			})?.Records?
 			// Convert from the repo model to the service model.
-			.Select(s => ToRecord(s)).ToList();
+			.Select(s => ToServiceRecord(s)).ToList();
 		}
 
-		private Record ToRecord(FromRepo.Record r)
+		private Record ToServiceRecord(FromRepo.Record r)
 		{
 			return new Record
 			{

@@ -4,6 +4,6 @@ namespace Homework.Data.Repositories.RecordRepository.Models
 {
 	public class GetRecordsRequest : RequestBase
 	{
-		public List<string[]> ValueArrays { get; set; }
+		public List<string[]> ValuesList { get; set; }
 	}
 }

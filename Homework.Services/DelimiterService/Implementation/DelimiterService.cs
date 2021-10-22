@@ -28,7 +28,7 @@ namespace Homework.Services.DelimiterService.Implementation
 		{
 			var filePaths = GetPaths(GetDelimiters());
 			var fileLines = GetLines(filePaths);
-			var values = SplitValues(fileLines);
+			var values = SplitValuesList(fileLines);
 
 			return new GetDelimitedValuesResponse
 			{
@@ -130,14 +130,24 @@ namespace Homework.Services.DelimiterService.Implementation
 				}).FilePaths;
 		}
 
-		private List<string[]> SplitValues(List<string> delimitedValues)
+		private string[] SplitValues(string delimitedValues)
 		{
 			// Use the delimiter repository to get the list of value arrays.
 			return repo.SplitValues(
 				new FromRepo.SplitValuesRequest
 				{
 					DelimitedValues = delimitedValues
-				}).ValueArrays;
+				}).Values;
+		}
+
+		private List<string[]> SplitValuesList(List<string> delimitedValuesList)
+		{
+			// Use the delimiter repository to get the list of value arrays.
+			return repo.SplitValuesList(
+				new FromRepo.SplitValuesListRequest
+				{
+					DelimitedValuesList = delimitedValuesList
+				}).ValuesList;
 		}
 		#endregion
 	}

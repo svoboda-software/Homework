@@ -43,15 +43,30 @@ namespace Homework.Data.Repositories.DelimiterRepository.Implementation
 
 		public SplitValuesResponse SplitValues(SplitValuesRequest request)
 		{
-			var valueArrays = request.DelimitedValues
-				// Split on any known delimiter in the string.
-				.Select(s => s.Split(GetDelimitingCharacter(s)))
-				.ToList();
+			var delimitedValues = request.DelimitedValues;
+
+			var values = delimitedValues.Split(
+				GetDelimiter(delimitedValues).Character);
 
 			return new SplitValuesResponse
 			{
-				Success = valueArrays != null,
-				ValueArrays = valueArrays
+				Success = values != null,
+				Values = values
+			};
+		}
+
+		public SplitValuesListResponse SplitValuesList(SplitValuesListRequest request)
+		{
+			var valuesList = request.DelimitedValuesList
+				// Split on any known delimiter in the string.
+				.Select(s => s.Split(
+					GetDelimiter(s).Character))
+				.ToList();
+
+			return new SplitValuesListResponse
+			{
+				Success = valuesList != null,
+				ValuesList = valuesList
 			};
 		}
 		#endregion
@@ -64,15 +79,6 @@ namespace Homework.Data.Repositories.DelimiterRepository.Implementation
 			return delimiters
 				.Where(w => delimitedValues.Contains(w.Character))
 				.FirstOrDefault();
-		}
-
-		private string GetDelimitingCharacter(string delimitedValues)
-		{
-			/// Returns the delimiting character from a character-delimited string.
-			return delimiters
-				.Where(w => delimitedValues.Contains(w.Character))
-				.FirstOrDefault()
-				.Character.ToString();
 		}
 		#endregion
 	}

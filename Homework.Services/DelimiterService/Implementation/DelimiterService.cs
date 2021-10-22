@@ -2,7 +2,7 @@ using Homework.Data.Repositories.DelimiterRepository;
 using FromRepo = Homework.Data.Repositories.DelimiterRepository.Models;
 using Homework.Services.DelimiterService.Models;
 using Homework.Services.FileService;
-using Homework.Services.FileService.Models;
+using FromFileService = Homework.Services.FileService.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -24,16 +24,16 @@ namespace Homework.Services.DelimiterService.Implementation
 		/// <summary>
 		/// Returns a list of value arrays from the data files.
 		/// <summary>
-		public GetDelimitedValuesResponse GetDelimitedValues(GetDelimitedValuesRequest request)
+		public GetValuesFromAllDelimitersResponse GetValuesFromAllDelimiters(GetValuesFromAllDelimitersRequest request)
 		{
-			var filePaths = GetPaths(GetDelimiters());
+			var filePaths = GetDelimiters().Select(s => s.FilePath).ToList();
 			var fileLines = GetLines(filePaths);
-			var values = SplitValuesList(fileLines);
+			var valuesList = SplitValuesList(fileLines);
 
-			return new GetDelimitedValuesResponse
+			return new GetValuesFromAllDelimitersResponse
 			{
-				Success = values != null,
-				Values = values
+				Success = valuesList != null,
+				ValuesList = valuesList
 			};
 		}
 
@@ -78,7 +78,7 @@ namespace Homework.Services.DelimiterService.Implementation
 			return new Delimiter
 			{
 				Character = delimiter.Character,
-				FilePath = GetPath(delimiter.Name),
+				FilePath = delimiter.FilePath,
 				Name = delimiter.Name
 			};
 		}
@@ -86,7 +86,7 @@ namespace Homework.Services.DelimiterService.Implementation
 		private List<Delimiter> GetDelimiters()
 		{
 			// Use the delimiter repository to get the list of valid delimiters.
-			return repo.GetDelimiters(
+			var delimiters = repo.GetDelimiters(
 				new FromRepo.GetDelimitersRequest())?
 					.Delimiters
 					.Select(s => new Delimiter
@@ -95,36 +95,39 @@ namespace Homework.Services.DelimiterService.Implementation
 						FilePath = s.FilePath,
 						Name = s.Name
 					}).ToList();
+
+			return delimiters.Select(s => new Delimiter
+			{
+				Character = s.Character,
+				FilePath = GetPath(s.Name),
+				Name = s.Name
+			}).ToList();
 		}
 
 		private List<string> GetLines(List<string> paths)
 		{
 			// Use the file service to get the lines in the data files.
 			return fileService.GetLines(
-				new GetLinesRequest
+				new FromFileService.GetLinesRequest
 				{
 					FilePaths = paths
 				}).FileLines;
 		}
-
 		private string GetPath(string delimiterName)
 		{
-			// Use the file service to get the path of the data file.
+			// Use the file service to get the path to the character-delimited data file.
 			return fileService.GetPath(
-				new GetPathRequest
+				new FromFileService.GetPathRequest
 				{
 					DelimiterName = delimiterName
 				}).FilePath;
 		}
 
-		private List<string> GetPaths(List<Delimiter> delimiters)
+		private List<string> GetPaths(List<string> delimiterNames)
 		{
-			var delimiterNames = delimiters?
-				.Select(s => s.Name).ToList();
-
-			// Use the file service to get the paths of the data files.
+			// Use the file service to get the path to the character-delimited data file.
 			return fileService.GetPaths(
-				new GetPathsRequest
+				new FromFileService.GetPathsRequest
 				{
 					DelimiterNames = delimiterNames
 				}).FilePaths;

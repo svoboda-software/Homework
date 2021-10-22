@@ -21,8 +21,6 @@ namespace Homework.UnitTests.UnitTests.Services.DelimiterService.UnitTests
 			var delimitedValues = "Tester, Tommy, tommy@aol.com, aqua, 3/12/1990";
 			var filePath = @"../Files/comma-delimited.txt";
 
-			var serviceRequest = new GetDelimiterRequest { DelimitedValues = delimitedValues };
-
 			// Mock the repo response.
 			var repoResponse = new FromRepo.GetDelimiterResponse
 			{
@@ -53,6 +51,8 @@ namespace Homework.UnitTests.UnitTests.Services.DelimiterService.UnitTests
 			mockfileService
 				.Setup(s => s.GetPath(It.Is<FromFileService.GetPathRequest>(x => true)))
 				.Returns(fileServiceResponse);
+
+			var serviceRequest = new GetDelimiterRequest { DelimitedValues = delimitedValues };
 
 			// Set the system under test.
 			var sut = new FromService.DelimiterService(mockRepo.Object, mockfileService.Object);

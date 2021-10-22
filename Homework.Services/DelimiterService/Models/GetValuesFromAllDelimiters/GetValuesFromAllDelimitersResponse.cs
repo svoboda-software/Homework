@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 namespace Homework.Services.DelimiterService.Models
 {
-	public class GetDelimitedValuesResponse : ResponseBase
+	public class GetValuesFromAllDelimitersResponse : ResponseBase
 	{
-		public List<string[]> Values { get; set; }
+		public List<string[]> ValuesList { get; set; }
 	}
 }
